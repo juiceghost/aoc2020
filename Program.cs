@@ -5,18 +5,54 @@ class Program
     {
         Console.WriteLine("AoC 2020 Day 2");
 
-        String input = File.ReadAllText(@"example.txt");
+        String input = File.ReadAllText(@"input.txt");
 
         List<string> puzzleInput = input.Split('\n').ToList();
 
         // 8-14 k: xkkkwkkkkqkkkktz
+        int valid = 0;
         for (int i = 0; i < puzzleInput.Count; i++)
         {
-            //Console.WriteLine(puzzleInput[i]);
-            string[] strings = puzzleInput[i].Split(' ');
-            Console.WriteLine(strings[0]);
-            Console.WriteLine(strings[1]);
-            Console.WriteLine(strings[2]);
+            if (validatePassword(puzzleInput[i]))
+            {
+                valid++;
+            }
+        }
+        Console.WriteLine(valid);
+
+        static Boolean validatePassword(string input)
+        {
+            // split the string into policy and password
+            // validate password
+            //Console.WriteLine(input);
+            string[] strings = input.Split(": ");
+            //Console.WriteLine(strings[0]);
+            string[] policyString = strings[0].Split(' ');
+            // policyString[0] "1-2"
+            // policyString[1] "a"
+            int[] minmax = policyString[0].Split('-').Select(i => Int32.Parse(i)).ToArray();
+            //Console.WriteLine(minmax[0]);
+            //Console.WriteLine(minmax[1]);
+            //Console.WriteLine(policyString[1]); // the character to check
+            //Console.WriteLine(strings[1]); // the passowrd to check
+            int min = minmax[0];
+            int max = minmax[1];
+            char policyCharacter = policyString[1][0];
+            string password = strings[1];
+            //Console.WriteLine(strings[2]);
+            
+
+            int count = password.Count(f => f == policyCharacter);
+            //Console.WriteLine($"Count is {count}");
+            //Console.ReadLine();
+            // 1-3 a means that the password must contain a at least 1 time and at most 3 times.
+            //if (count >= min && count <= max)
+            //{
+            //    return true;
+            //}
+            //return false;
+
+            return count >= min && count <= max ? true : false;
         }
     }
 
